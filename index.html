@@ -10,10 +10,7 @@
   :root { --red: #E8192C; --blush: #F2BFBF; --charcoal: #444444; --white: #FFFFFF; --off-white: #F7F5F2; }
   body { background: var(--charcoal); min-height: 100vh; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0 0 48px; color: var(--white); overflow-x: hidden; }
   .hero { width: 100%; background: var(--red); padding: 36px 24px 52px; text-align: center; clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%); }
-  .logo-mark { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
-  .diamond { width: 14px; height: 14px; background: var(--white); transform: rotate(45deg); }
-  .diamond.blush { background: var(--blush); }
-  .diamond.sm { width: 10px; height: 10px; }
+  .logo-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; }
   .brand-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 38px; letter-spacing: -1px; color: var(--white); line-height: 1; text-transform: uppercase; }
   .brand-sub { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 6px; }
   .card { background: var(--white); border-radius: 20px; padding: 32px 28px; width: calc(100% - 40px); max-width: 420px; margin-top: -16px; box-shadow: 0 24px 48px rgba(0,0,0,0.3); }
@@ -50,11 +47,7 @@
 <body>
 
 <div class="hero">
-  <div class="logo-mark">
-    <div class="diamond blush sm" style="align-self:flex-end;margin-bottom:2px"></div>
-    <div class="diamond"></div>
-    <div class="diamond blush sm" style="align-self:flex-end;margin-bottom:2px"></div>
-  </div>
+  <img class="logo-img" src="keenasfk-logo-transparent.png" alt="KEENASFK logo">
   <div class="brand-name">KEENASFK</div>
   <div class="brand-sub">Run Club · Melbourne</div>
 </div>
