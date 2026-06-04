@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEENASFK Admin — Week 23</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --red: #E8192C; --blush: #F2BFBF; --charcoal: #444444; --white: #FFFFFF; --off-white: #F7F5F2; --border: #ECECEC; }
+  body { background: #F4F2EF; min-height: 100vh; font-family: 'DM Sans', sans-serif; color: var(--charcoal); }
+  .topbar { background: var(--charcoal); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-brand { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 20px; color: var(--white); letter-spacing: -0.5px; text-transform: uppercase; }
+  .topbar-badge { background: var(--red); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
+  .container { max-width: 720px; margin: 0 auto; padding: 28px 20px 60px; }
+  .page-title { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 26px; text-transform: uppercase; color: var(--charcoal); letter-spacing: -0.5px; }
+  .page-sub { font-size: 14px; color: #888; margin-top: 4px; margin-bottom: 24px; }
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--white); border-radius: 14px; padding: 18px 16px; border: 1px solid var(--border); }
+  .stat-label { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+  .stat-value { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 28px; color: var(--charcoal); line-height: 1; }
+  .stat-value.red { color: var(--red); }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
+  .search-wrap { position: relative; flex: 1; min-width: 180px; }
+  .search-wrap input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px 10px 36px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--charcoal); background: var(--white); outline: none; transition: border-color 0.2s; }
+  .search-wrap input:focus { border-color: var(--red); }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 15px; color: #bbb; pointer-events: none; }
+  .export-btn { background: var(--charcoal); color: var(--white); border: none; border-radius: 10px; padding: 10px 18px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+  .export-btn:hover { background: #222; }
+  .clear-btn { background: transparent; color: #bbb; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+  .clear-btn:hover { border-color: var(--red); color: var(--red); }
+  .table-wrap { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--off-white); }
+  thead th { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #999; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid #F5F5F5; transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #FAFAFA; }
+  tbody td { padding: 13px 16px; font-size: 14px; color: var(--charcoal); vertical-align: middle; }
+  .num-col { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; color: #ccc; width: 36px; }
+  .insta-link { color: var(--red); text-decoration: none; font-weight: 500; }
+  .insta-link:hover { text-decoration: underline; }
+  .time-col { font-size: 12px; color: #bbb; }
+  .empty-state { text-align: center; padding: 60px 20px; color: #bbb; }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .confirm-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+  .confirm-overlay.show { display: flex; }
+  .confirm-box { background: var(--white); border-radius: 16px; padding: 28px 24px; width: calc(100% - 48px); max-width: 360px; text-align: center; }
+  .confirm-title { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 16px; text-transform: uppercase; color: var(--charcoal); margin-bottom: 8px; }
+  .confirm-sub { font-size: 14px; color: #888; margin-bottom: 24px; line-height: 1.5; }
+  .confirm-btns { display: flex; gap: 10px; }
+  .btn-cancel { flex: 1; background: var(--off-white); color: var(--charcoal); border: none; border-radius: 10px; padding: 12px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+  .btn-confirm { flex: 1; background: var(--red); color: var(--white); border: none; border-radius: 10px; padding: 12px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--charcoal); color: var(--white); padding: 12px 20px; border-radius: 10px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: transform 0.3s; z-index: 200; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">KEENASFK</div>
+  <div class="topbar-badge">Admin · Week 23</div>
+</div>
+
+<div class="container">
+  <div class="page-title">Sign-In List</div>
+  <div class="page-sub">Saturday 06/06 · Maribyrnong Boulevard · 8:00 AM</div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total</div>
+      <div class="stat-value red" id="stat-total">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">New</div>
+      <div class="stat-value" id="stat-new">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Last In</div>
+      <div class="stat-value" style="font-size:14px;padding-top:6px;" id="stat-last">—</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search name or handle…" oninput="renderTable()">
+    </div>
+    <button class="export-btn" onclick="exportCSV()">Export CSV ↓</button>
+    <button class="clear-btn" onclick="showClear()">Clear All</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="num-col">#</th>
+          <th>Name</th>
+          <th>Instagram</th>
+          <th>Signed In</th>
+        </tr>
+      </thead>
+      <tbody id="runner-tbody"></tbody>
+    </table>
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-icon">👟</div>
+      <div class="empty-text">No runners signed in yet</div>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title">Clear All?</div>
+    <div class="confirm-sub">This will permanently delete all Week 23 sign-ins. This cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="hideClear()">Cancel</button>
+      <button class="btn-confirm" onclick="clearAll()">Clear</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const KEY = 'keenasfk_w23';
+
+  function getRunners() {
+    return JSON.parse(localStorage.getItem(KEY) || '[]');
+  }
+
+  function formatTime(iso) {
+    try {
+      return new Date(iso).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' });
+    } catch { return '—'; }
+  }
+
+  function renderTable() {
+    const runners = getRunners();
+    const q = document.getElementById('search').value.toLowerCase();
+    const filtered = runners.filter(r =>
+      r.name.toLowerCase().includes(q) || r.instagram.toLowerCase().includes(q)
+    );
+
+    const tbody = document.getElementById('runner-tbody');
+    const empty = document.getElementById('empty-state');
+
+    document.getElementById('stat-total').textContent = runners.length;
+    document.getElementById('stat-new').textContent = runners.length > 0 ? runners.length : '—';
+    if (runners.length > 0) {
+      const last = runners[runners.length - 1];
+      document.getElementById('stat-last').textContent = last.name.split(' ')[0];
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    tbody.innerHTML = filtered.map((r, i) => `
+      <tr>
+        <td class="num-col">${i + 1}</td>
+        <td><strong>${r.name}</strong></td>
+        <td><a class="insta-link" href="https://instagram.com/${r.instagram.replace('@','')}" target="_blank">${r.instagram}</a></td>
+        <td class="time-col">${formatTime(r.timestamp)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function exportCSV() {
+    const runners = getRunners();
+    if (runners.length === 0) { showToast('No data to export'); return; }
+    const header = 'Name,Instagram,Time\n';
+    const rows = runners.map(r => `"${r.name}","${r.instagram}","${formatTime(r.timestamp)}"`).join('\n');
+    const blob = new Blob([header + rows], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'keenasfk-week23.csv'; a.click();
+    URL.revokeObjectURL(url);
+    showToast('Exported!');
+  }
+
+  function showClear() { document.getElementById('confirm-overlay').classList.add('show'); }
+  function hideClear() { document.getElementById('confirm-overlay').classList.remove('show'); }
+
+  function clearAll() {
+    localStorage.removeItem(KEY);
+    hideClear();
+    renderTable();
+    showToast('Cleared');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // Auto-refresh every 15s so you can see new sign-ins live
+  renderTable();
+  setInterval(renderTable, 15000);
+</script>
+</body>
+</html>
