@@ -10,7 +10,6 @@
   :root { --red: #E8192C; --blush: #F2BFBF; --charcoal: #444444; --white: #FFFFFF; --off-white: #F7F5F2; }
   body { background: var(--charcoal); min-height: 100vh; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0 0 48px; color: var(--white); overflow-x: hidden; }
   .hero { width: 100%; background: var(--red); padding: 36px 24px 52px; text-align: center; clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%); }
-  .logo-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; }
   .brand-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 38px; letter-spacing: -1px; color: var(--white); line-height: 1; text-transform: uppercase; }
   .brand-sub { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 6px; }
   .card { background: var(--white); border-radius: 20px; padding: 32px 28px; width: calc(100% - 40px); max-width: 420px; margin-top: -16px; box-shadow: 0 24px 48px rgba(0,0,0,0.3); }
@@ -47,7 +46,6 @@
 <body>
 
 <div class="hero">
-  <img class="logo-img" src="keenasfk-logo-transparent.png" alt="KEENASFK logo">
   <div class="brand-name">KEENASFK</div>
   <div class="brand-sub">Run Club · Melbourne</div>
 </div>
@@ -78,14 +76,14 @@
         <div class="chip-icon">📍</div>
         <div>
           <div class="chip-label">Location</div>
-          <div class="chip-value">Maribyrnong Blvd</div>
+          <div class="chip-value" id="chip-location">—</div>
         </div>
       </div>
       <div class="info-chip">
         <div class="chip-icon">🕗</div>
         <div>
           <div class="chip-label">Time</div>
-          <div class="chip-value">8:00 AM</div>
+          <div class="chip-value" id="chip-time">—</div>
         </div>
       </div>
     </div>
@@ -104,11 +102,21 @@
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-MBLXebhaeHmCRtepIJT_q8S0nywVETJarYCaI-BGjM-ipsKdaIbDLElRJLfqvQ4S/exec';
 
-  const now = new Date();
-  const weekNum = Math.ceil((((now - new Date(now.getFullYear(), 0, 1)) / 86400000) + new Date(now.getFullYear(), 0, 1).getDay() + 1) / 7);
-  const dateStr = now.toLocaleDateString('en-AU', { day: '2-digit', month: '2-digit' });
-  const dayStr = now.toLocaleDateString('en-AU', { weekday: 'long' });
-  document.getElementById('week-badge').textContent = 'Week ' + weekNum + ' · ' + dayStr + ' ' + dateStr;
+  let config = { location: '—', time: '—', week: '—', date: '—' };
+
+  async function loadConfig() {
+    try {
+      const res = await fetch(SCRIPT_URL);
+      config = await res.json();
+      document.getElementById('chip-location').textContent = config.location;
+      document.getElementById('chip-time').textContent = config.time;
+      document.getElementById('week-badge').textContent = 'Week ' + config.week + ' · Saturday ' + config.date;
+    } catch (err) {
+      document.getElementById('week-badge').textContent = 'KEENASFK Run Club';
+    }
+  }
+
+  loadConfig();
 
   async function handleSubmit() {
     const name = document.getElementById('name').value.trim();
@@ -129,12 +137,13 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Signing in…';
 
+    const now = new Date();
     const payload = {
       name: name,
       instagram: '@' + insta,
       time: now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }),
-      date: dateStr,
-      week: weekNum
+      date: config.date,
+      week: config.week
     };
 
     try {
