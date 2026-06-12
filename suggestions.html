@@ -1,0 +1,126 @@
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KEENASFK — Suggestions</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --red: #E8192C; --blush: #F2BFBF; --charcoal: #444444; --white: #FFFFFF; --off-white: #F7F5F2; }
+  body { background: var(--charcoal); min-height: 100vh; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0 0 48px; color: var(--white); overflow-x: hidden; }
+  .hero { width: 100%; background: var(--red); padding: 36px 24px 52px; text-align: center; clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%); }
+  .brand-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 38px; letter-spacing: -1px; color: var(--white); line-height: 1; text-transform: uppercase; }
+  .brand-sub { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 6px; }
+  .card { background: var(--white); border-radius: 20px; padding: 32px 28px; width: calc(100% - 40px); max-width: 420px; margin-top: -16px; box-shadow: 0 24px 48px rgba(0,0,0,0.3); }
+  .card-heading { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 22px; color: var(--charcoal); text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .card-sub { font-size: 14px; color: #888; margin-bottom: 28px; line-height: 1.5; }
+  .field-group { margin-bottom: 20px; }
+  label { display: block; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal); margin-bottom: 8px; }
+  input[type="text"], textarea { width: 100%; border: 2px solid #E8E8E8; border-radius: 12px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--charcoal); background: var(--off-white); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  input[type="text"]:focus, textarea:focus { border-color: var(--red); background: var(--white); }
+  textarea { resize: none; height: 140px; line-height: 1.6; }
+  .field-hint { font-size: 12px; color: #aaa; margin-top: 6px; font-family: 'DM Sans', sans-serif; line-height: 1.5; }
+  .optional-tag { display: inline-block; background: var(--off-white); color: #aaa; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .submit-btn { width: 100%; background: var(--red); color: var(--white); border: none; border-radius: 12px; padding: 16px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 8px; -webkit-appearance: none; }
+  .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+  .success-screen { display: none; text-align: center; padding: 20px 0 8px; }
+  .success-icon { width: 64px; height: 64px; background: #E8F7EF; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 30px; }
+  .success-title { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 22px; color: var(--charcoal); text-transform: uppercase; margin-bottom: 8px; }
+  .success-sub { font-size: 15px; color: #888; line-height: 1.6; }
+  .success-sub span { color: var(--red); font-weight: 600; }
+  .follow-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--charcoal); color: var(--white); border-radius: 10px; padding: 12px 20px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; margin-top: 20px; }
+  .footer-note { font-size: 12px; color: rgba(255,255,255,0.35); text-align: center; margin-top: 24px; }
+  .error-msg { font-size: 12px; color: var(--red); margin-top: 6px; display: none; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .week-badge { display: inline-block; background: var(--blush); color: var(--red); font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="brand-name">KEENASFK</div>
+  <div class="brand-sub">Run Club · Melbourne</div>
+</div>
+
+<div class="card">
+  <div id="form-screen">
+    <div class="week-badge" id="week-badge">Suggestion Box</div>
+    <div class="card-heading">Have Your Say</div>
+    <div class="card-sub">We want to hear from you — help us make KEENASFK even better 💬</div>
+
+    <div class="field-group">
+      <label for="name">Your Name <span class="optional-tag">Optional</span></label>
+      <input type="text" id="name" placeholder="First name or leave blank" autocomplete="name" autocapitalize="words">
+    </div>
+
+    <div class="field-group">
+      <label for="suggestion">Your Suggestion</label>
+      <textarea id="suggestion" placeholder="Tell us what you think! e.g. a new run location, a café to visit after, refreshments you'd love to see, anything at all…"></textarea>
+      <div class="error-msg" id="suggestion-err">Please enter a suggestion</div>
+      <div class="field-hint">No idea too big or too small 👟</div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Submit →</button>
+    <div class="error-msg" id="submit-err" style="text-align:center;margin-top:12px;">Something went wrong — please try again</div>
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">💬</div>
+    <div class="success-title">Thanks!</div>
+    <div class="success-sub">Your suggestion has been received.<br><span>We read every single one.</span></div>
+    <a class="follow-cta" href="https://www.instagram.com/keenasfkrun" target="_blank">Follow @keenasfkrun</a>
+  </div>
+</div>
+
+<div class="footer-note">keenasfk.run · est. 2025</div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-MBLXebhaeHmCRtepIJT_q8S0nywVETJarYCaI-BGjM-ipsKdaIbDLElRJLfqvQ4S/exec';
+
+  async function handleSubmit() {
+    const name = document.getElementById('name').value.trim();
+    const suggestion = document.getElementById('suggestion').value.trim();
+
+    document.getElementById('suggestion-err').style.display = 'none';
+    document.getElementById('submit-err').style.display = 'none';
+    document.getElementById('suggestion').style.borderColor = '#E8E8E8';
+
+    if (!suggestion) {
+      document.getElementById('suggestion-err').style.display = 'block';
+      document.getElementById('suggestion').style.borderColor = '#E8192C';
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Submitting…';
+
+    const now = new Date();
+    const payload = {
+      type: 'suggestion',
+      name: name || 'Anonymous',
+      suggestion: suggestion,
+      date: now.toLocaleDateString('en-AU', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+      time: now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById('form-screen').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'block';
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit →';
+      document.getElementById('submit-err').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
