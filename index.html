@@ -17,11 +17,14 @@
   .card-sub { font-size: 14px; color: #888; margin-bottom: 28px; }
   .field-group { margin-bottom: 20px; }
   label { display: block; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal); margin-bottom: 8px; }
-  input[type="text"] { width: 100%; border: 2px solid #E8E8E8; border-radius: 12px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--charcoal); background: var(--off-white); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
-  input[type="text"]:focus { border-color: var(--red); background: var(--white); }
+  input[type="text"], textarea { width: 100%; border: 2px solid #E8E8E8; border-radius: 12px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--charcoal); background: var(--off-white); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  input[type="text"]:focus, textarea:focus { border-color: var(--red); background: var(--white); }
+  textarea { resize: none; height: 100px; line-height: 1.6; }
   .insta-wrap { position: relative; }
   .insta-prefix { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
   .insta-wrap input { padding-left: 30px; }
+  .field-hint { font-size: 12px; color: #aaa; margin-top: 6px; font-family: 'DM Sans', sans-serif; }
+  .field-hint strong { color: #888; }
   .submit-btn { width: 100%; background: var(--red); color: var(--white); border: none; border-radius: 12px; padding: 16px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 8px; -webkit-appearance: none; }
   .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
   .divider { height: 1px; background: #F0F0F0; margin: 24px 0; }
@@ -30,6 +33,16 @@
   .chip-icon { font-size: 18px; }
   .chip-label { font-size: 10px; color: #999; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
   .chip-value { font-size: 12px; color: var(--charcoal); font-weight: 500; }
+  .menu-section { margin-top: 24px; }
+  .menu-heading { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .menu-heading span { color: var(--red); }
+  .menu-images { display: flex; flex-direction: column; gap: 10px; }
+  .menu-img { width: 100%; border-radius: 12px; cursor: pointer; transition: transform 0.2s; }
+  .menu-img:active { transform: scale(0.98); }
+  .menu-hint { font-size: 11px; color: #bbb; text-align: center; margin-top: 6px; font-family: 'DM Sans', sans-serif; }
+  .collab-badge { display: inline-flex; align-items: center; gap: 6px; background: #FFF3E0; color: #E65100; border-radius: 8px; padding: 6px 12px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+  .discount-strip { background: #FFF3E0; border: 1.5px solid #FFB74D; border-radius: 10px; padding: 10px 14px; margin-bottom: 20px; font-size: 13px; color: #E65100; font-family: 'DM Sans', sans-serif; line-height: 1.5; }
+  .discount-strip strong { font-family: 'Montserrat', sans-serif; font-weight: 900; display: block; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
   .success-screen { display: none; text-align: center; padding: 20px 0 8px; }
   .success-icon { width: 64px; height: 64px; background: #E8F7EF; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 30px; }
   .success-title { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 22px; color: var(--charcoal); text-transform: uppercase; margin-bottom: 8px; }
@@ -55,23 +68,41 @@
     <div class="week-badge" id="week-badge">Loading…</div>
     <div class="card-heading">Sign In</div>
     <div class="card-sub">Let us know you're here 👟</div>
+
+    <div class="collab-badge">🍵 This week · Natsu Collab</div>
+
+    <div class="discount-strip">
+      <strong>KEENASFK Crew — 15% Off</strong>
+      Show this screen at the cart to claim your discount!
+    </div>
+
     <div class="field-group">
       <label for="name">Your Name</label>
       <input type="text" id="name" placeholder="First & Last Name" autocomplete="name" autocapitalize="words">
       <div class="error-msg" id="name-err">Please enter your name</div>
     </div>
+
     <div class="field-group">
       <label for="instagram">Instagram Handle</label>
       <div class="insta-wrap">
         <span class="insta-prefix">@</span>
         <input type="text" id="instagram" placeholder="yourhandle" autocomplete="off" autocapitalize="none">
       </div>
-     <div class="error-msg" id="insta-err">Please enter your Instagram handle</div>
-      <div style="font-size:12px;color:#aaa;margin-top:6px;font-family:'DM Sans',sans-serif;">No Instagram? Just type <strong style="color:#888;">NA</strong></div>
+      <div class="error-msg" id="insta-err">Please enter your Instagram handle</div>
+      <div class="field-hint">No Instagram? Just type <strong>NA</strong></div>
     </div>
-    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Let's Run →</button>
+
+    <div class="field-group">
+      <label for="drink">Pre-Order Your Drink</label>
+      <textarea id="drink" placeholder="e.g. Jasmine Morning, add matcha · Banana Brûlée · Sakura Bloom, no foam…"></textarea>
+      <div class="field-hint">Check the Natsu menu below before ordering 👇</div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Sign In & Pre-Order →</button>
     <div class="error-msg" id="submit-err" style="text-align:center;margin-top:12px;">Something went wrong — please try again</div>
+
     <div class="divider"></div>
+
     <div class="run-info">
       <div class="info-chip">
         <div class="chip-icon">📍</div>
@@ -88,12 +119,21 @@
         </div>
       </div>
     </div>
+
+    <div class="menu-section">
+      <div class="menu-heading">🍵 <span>Natsu</span> Menu</div>
+      <div class="menu-images">
+        <img class="menu-img" src="KSAF_Menu.png" alt="Natsu Menu">
+        <img class="menu-img" src="Visual_Menu.png" alt="Natsu Drinks">
+      </div>
+      <div class="menu-hint">Tap images to zoom</div>
+    </div>
   </div>
 
   <div class="success-screen" id="success-screen">
-    <div class="success-icon">✅</div>
+    <div class="success-icon">🍵</div>
     <div class="success-title">You're In!</div>
-    <div class="success-sub">Welcome to the club, <span id="runner-name"></span>.<br>Great to have you running with us today.</div>
+    <div class="success-sub">Welcome <span id="runner-name"></span>!<br>Your drink order has been noted.<br>Show this screen for your <span>15% off</span> at the Natsu cart.</div>
     <a class="follow-cta" href="https://www.instagram.com/keenasfkrun" target="_blank">Follow @keenasfkrun</a>
   </div>
 </div>
@@ -122,6 +162,7 @@
   async function handleSubmit() {
     const name = document.getElementById('name').value.trim();
     const insta = document.getElementById('instagram').value.trim().replace(/^@/, '');
+    const drink = document.getElementById('drink').value.trim();
     let valid = true;
 
     document.getElementById('name-err').style.display = 'none';
@@ -142,6 +183,7 @@
     const payload = {
       name: name,
       instagram: '@' + insta,
+      drink: drink || 'No order',
       time: now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }),
       date: config.date,
       week: config.week
@@ -159,7 +201,7 @@
       document.getElementById('success-screen').style.display = 'block';
     } catch (err) {
       btn.disabled = false;
-      btn.innerHTML = "Let's Run →";
+      btn.innerHTML = 'Sign In & Pre-Order →';
       document.getElementById('submit-err').style.display = 'block';
     }
   }
