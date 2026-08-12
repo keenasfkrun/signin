@@ -21,11 +21,7 @@ html
   input[type="text"], textarea { width: 100%; border: 2px solid #E8E8E8; border-radius: 12px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--charcoal); background: var(--off-white); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
   input[type="text"]:focus, textarea:focus { border-color: var(--red); background: var(--white); }
   textarea { resize: none; height: 100px; line-height: 1.6; }
-  .insta-wrap { position: relative; }
-  .insta-prefix { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
-  .insta-wrap input { padding-left: 30px; }
   .field-hint { font-size: 12px; color: #aaa; margin-top: 6px; font-family: 'DM Sans', sans-serif; }
-  .field-hint strong { color: #888; }
   .submit-btn { width: 100%; background: var(--red); color: var(--white); border: none; border-radius: 12px; padding: 16px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 8px; -webkit-appearance: none; }
   .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
   .divider { height: 1px; background: #F0F0F0; margin: 24px 0; }
@@ -89,16 +85,6 @@ html
       <div class="error-msg" id="name-err">Please enter your name</div>
     </div>
 
-    <div class="field-group">
-      <label for="instagram">Instagram Handle</label>
-      <div class="insta-wrap">
-        <span class="insta-prefix">@</span>
-        <input type="text" id="instagram" placeholder="yourhandle" autocomplete="off" autocapitalize="none">
-      </div>
-      <div class="error-msg" id="insta-err">Please enter your Instagram handle</div>
-      <div class="field-hint">No Instagram? Just type <strong>NA</strong></div>
-    </div>
-
     <div class="menu-section">
       <div class="menu-heading">🍵 <span>Natsu</span> — This Week's Menu</div>
       <img class="menu-img" src="KSAF_Menu.png" alt="Natsu Menu">
@@ -145,18 +131,14 @@ html
 
   async function handleSubmit() {
     const name = document.getElementById('name').value.trim();
-    const insta = document.getElementById('instagram').value.trim().replace(/^@/, '');
     const drink = document.getElementById('drink').value.trim();
     let valid = true;
 
     document.getElementById('name-err').style.display = 'none';
-    document.getElementById('insta-err').style.display = 'none';
     document.getElementById('submit-err').style.display = 'none';
     document.getElementById('name').style.borderColor = '#E8E8E8';
-    document.getElementById('instagram').style.borderColor = '#E8E8E8';
 
     if (!name) { document.getElementById('name-err').style.display = 'block'; document.getElementById('name').style.borderColor = '#E8192C'; valid = false; }
-    if (!insta) { document.getElementById('insta-err').style.display = 'block'; document.getElementById('instagram').style.borderColor = '#E8192C'; valid = false; }
     if (!valid) return;
 
     const btn = document.getElementById('submit-btn');
@@ -166,7 +148,7 @@ html
     const now = new Date();
     const payload = {
       name: name,
-      instagram: '@' + insta,
+      instagram: 'N/A',
       drink: drink || 'No order',
       time: now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }),
       date: config.date,
