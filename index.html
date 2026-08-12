@@ -22,8 +22,6 @@
   .insta-wrap { position: relative; }
   .insta-prefix { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
   .insta-wrap input { padding-left: 30px; }
-  .field-hint { font-size: 12px; color: #aaa; margin-top: 6px; font-family: 'DM Sans', sans-serif; }
-  .field-hint strong { color: #888; }
   .submit-btn { width: 100%; background: var(--red); color: var(--white); border: none; border-radius: 12px; padding: 16px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 8px; -webkit-appearance: none; }
   .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
   .divider { height: 1px; background: #F0F0F0; margin: 24px 0; }
@@ -59,4 +57,112 @@
     <div class="card-sub">Let us know you're here 👟</div>
     <div class="field-group">
       <label for="name">Your Name</label>
-      <input type="text" id="name" placeholder="First & Last Name"
+      <input type="text" id="name" placeholder="First & Last Name" autocomplete="name" autocapitalize="words">
+      <div class="error-msg" id="name-err">Please enter your name</div>
+    </div>
+    <div class="field-group">
+      <label for="instagram">Instagram Handle</label>
+      <div class="insta-wrap">
+        <span class="insta-prefix">@</span>
+        <input type="text" id="instagram" placeholder="yourhandle" autocomplete="off" autocapitalize="none">
+      </div>
+     <div class="error-msg" id="insta-err">Please enter your Instagram handle</div>
+      <div style="font-size:12px;color:#aaa;margin-top:6px;font-family:'DM Sans',sans-serif;">No Instagram? Just type <strong style="color:#888;">NA</strong></div>
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Let's Run →</button>
+    <div class="error-msg" id="submit-err" style="text-align:center;margin-top:12px;">Something went wrong — please try again</div>
+    <div class="divider"></div>
+    <div class="run-info">
+      <div class="info-chip">
+        <div class="chip-icon">📍</div>
+        <div>
+          <div class="chip-label">Location</div>
+          <div class="chip-value" id="chip-location">—</div>
+        </div>
+      </div>
+      <div class="info-chip">
+        <div class="chip-icon">🕗</div>
+        <div>
+          <div class="chip-label">Time</div>
+          <div class="chip-value" id="chip-time">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✅</div>
+    <div class="success-title">You're In!</div>
+    <div class="success-sub">Welcome to the club, <span id="runner-name"></span>.<br>Great to have you running with us today.</div>
+    <a class="follow-cta" href="https://www.instagram.com/keenasfkrun" target="_blank">Follow @keenasfkrun</a>
+  </div>
+</div>
+
+<div class="footer-note">keenasfk.run · est. 2025</div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-MBLXebhaeHmCRtepIJT_q8S0nywVETJarYCaI-BGjM-ipsKdaIbDLElRJLfqvQ4S/exec';
+
+  let config = { location: '—', time: '—', week: '—', date: '—' };
+
+  async function loadConfig() {
+    try {
+      const res = await fetch(SCRIPT_URL);
+      config = await res.json();
+      document.getElementById('chip-location').textContent = config.location;
+      document.getElementById('chip-time').textContent = config.time;
+      document.getElementById('week-badge').textContent = 'Week ' + config.week + ' · Saturday ' + config.date;
+    } catch (err) {
+      document.getElementById('week-badge').textContent = 'KEENASFK Run Club';
+    }
+  }
+
+  loadConfig();
+
+  async function handleSubmit() {
+    const name = document.getElementById('name').value.trim();
+    const insta = document.getElementById('instagram').value.trim().replace(/^@/, '');
+    let valid = true;
+
+    document.getElementById('name-err').style.display = 'none';
+    document.getElementById('insta-err').style.display = 'none';
+    document.getElementById('submit-err').style.display = 'none';
+    document.getElementById('name').style.borderColor = '#E8E8E8';
+    document.getElementById('instagram').style.borderColor = '#E8E8E8';
+
+    if (!name) { document.getElementById('name-err').style.display = 'block'; document.getElementById('name').style.borderColor = '#E8192C'; valid = false; }
+    if (!insta) { document.getElementById('insta-err').style.display = 'block'; document.getElementById('instagram').style.borderColor = '#E8192C'; valid = false; }
+    if (!valid) return;
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Signing in…';
+
+    const now = new Date();
+    const payload = {
+      name: name,
+      instagram: '@' + insta,
+      time: now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }),
+      date: config.date,
+      week: config.week
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById('runner-name').textContent = name.split(' ')[0];
+      document.getElementById('form-screen').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'block';
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = "Let's Run →";
+      document.getElementById('submit-err').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
