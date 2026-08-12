@@ -73,7 +73,6 @@
 
     <div class="discount-strip">
       <strong>KEENASFK Crew — 15% Off</strong>
-      Show this screen at the cart to claim your discount!
     </div>
 
     <div class="field-group">
@@ -94,7 +93,7 @@
 
     <div class="field-group">
       <label for="drink">Pre-Order Your Drink</label>
-      <textarea id="drink" placeholder="e.g. Jasmine Morning, add matcha · Banana Brûlée · Sakura Bloom…"></textarea>
+      <textarea id="drink" placeholder="e.g. Jasmine Morning, add matcha · Banana Brûlée · Sakura Bloom, no foam…"></textarea>
       <div class="field-hint">Check the Natsu menu below before ordering 👇</div>
     </div>
 
@@ -120,91 +119,33 @@
       </div>
     </div>
 
-    <div class="menu-section">
-      <div class="menu-heading">🍵 <span>Natsu</span> Menu</div>
-      <div class="menu-images">
-        <img class="menu-img" src="KSAF_Menu.png" alt="Natsu Menu">
-        <img class="menu-img" src="Visual_Menu.png" alt="Natsu Drinks">
-      </div>
-      <div class="menu-hint">Tap images to zoom</div>
-    </div>
+<div class="menu-section">
+  <div class="menu-heading">🍵 <span>Natsu</span> Menu</div>
+
+  <div class="menu-images">
+    <img class="menu-img" src="KSAF_Menu.png" alt="Natsu Menu">
+    <img class="menu-img" src="Visual Menu.png" alt="Natsu Drinks">
   </div>
 
-  <div class="success-screen" id="success-screen">
-    <div class="success-icon">🍵</div>
-    <div class="success-title">You're In!</div>
-    <div class="success-sub">Welcome <span id="runner-name"></span>!<br>Your drink order has been noted.<br>Show this screen for your <span>15% off</span> at the Natsu cart.</div>
-    <a class="follow-cta" href="https://www.instagram.com/keenasfkrun" target="_blank">Follow @keenasfkrun</a>
-  </div>
+  <div class="menu-hint">Tap images to zoom</div>
 </div>
 
-<div class="footer-note">keenasfk.run · est. 2025</div>
+</div> <!-- CLOSES form-screen -->
 
-<script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-MBLXebhaeHmCRtepIJT_q8S0nywVETJarYCaI-BGjM-ipsKdaIbDLElRJLfqvQ4S/exec';
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">🍵</div>
 
-  let config = { location: '—', time: '—', week: '—', date: '—' };
+  <div class="success-title">You're In!</div>
 
-  async function loadConfig() {
-    try {
-      const res = await fetch(SCRIPT_URL);
-      config = await res.json();
-      document.getElementById('chip-location').textContent = config.location;
-      document.getElementById('chip-time').textContent = config.time;
-      document.getElementById('week-badge').textContent = 'Week ' + config.week + ' · Saturday ' + config.date;
-    } catch (err) {
-      document.getElementById('week-badge').textContent = 'KEENASFK Run Club';
-    }
-  }
+  <div class="success-sub">
+    Welcome <span id="runner-name"></span>!<br>
+    Your drink order has been noted.<br>
+    Show this screen for your <span>15% off</span> at the Natsu cart.
+  </div>
 
-  loadConfig();
-
-  async function handleSubmit() {
-    const name = document.getElementById('name').value.trim();
-    const insta = document.getElementById('instagram').value.trim().replace(/^@/, '');
-    const drink = document.getElementById('drink').value.trim();
-    let valid = true;
-
-    document.getElementById('name-err').style.display = 'none';
-    document.getElementById('insta-err').style.display = 'none';
-    document.getElementById('submit-err').style.display = 'none';
-    document.getElementById('name').style.borderColor = '#E8E8E8';
-    document.getElementById('instagram').style.borderColor = '#E8E8E8';
-
-    if (!name) { document.getElementById('name-err').style.display = 'block'; document.getElementById('name').style.borderColor = '#E8192C'; valid = false; }
-    if (!insta) { document.getElementById('insta-err').style.display = 'block'; document.getElementById('instagram').style.borderColor = '#E8192C'; valid = false; }
-    if (!valid) return;
-
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Signing in…';
-
-    const now = new Date();
-    const payload = {
-      name: name,
-      instagram: '@' + insta,
-      drink: drink || 'No order',
-      time: now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }),
-      date: config.date,
-      week: config.week
-    };
-
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      document.getElementById('runner-name').textContent = name.split(' ')[0];
-      document.getElementById('form-screen').style.display = 'none';
-      document.getElementById('success-screen').style.display = 'block';
-    } catch (err) {
-      btn.disabled = false;
-      btn.innerHTML = 'Sign In & Pre-Order →';
-      document.getElementById('submit-err').style.display = 'block';
-    }
-  }
-</script>
-</body>
-</html>
+  <a class="follow-cta"
+     href="https://www.instagram.com/keenasfkrun"
+     target="_blank">
+    Follow @keenasfkrun
+  </a>
+</div>
