@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,14 +34,10 @@
   .chip-icon { font-size: 18px; }
   .chip-label { font-size: 10px; color: #999; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
   .chip-value { font-size: 12px; color: var(--charcoal); font-weight: 500; }
-  .menu-section { background: var(--off-white); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
+  .menu-section { margin-bottom: 20px; }
   .menu-heading { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal); margin-bottom: 12px; }
   .menu-heading span { color: var(--red); }
-  .menu-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-  .menu-scroll::-webkit-scrollbar { display: none; }
-  .menu-img { height: 220px; width: auto; border-radius: 10px; flex-shrink: 0; cursor: pointer; }
-  .menu-hint { font-size: 11px; color: #bbb; text-align: center; margin-top: 8px; font-family: 'DM Sans', sans-serif; }
-  .collab-badge { display: inline-flex; align-items: center; gap: 6px; background: #FFF3E0; color: #E65100; border-radius: 8px; padding: 6px 12px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
+  .menu-img { width: 100%; border-radius: 12px; display: block; }
   .success-screen { display: none; text-align: center; padding: 20px 0 8px; }
   .success-icon { width: 64px; height: 64px; background: #E8F7EF; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 30px; }
   .success-title { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 22px; color: var(--charcoal); text-transform: uppercase; margin-bottom: 8px; }
@@ -104,10 +101,7 @@
 
     <div class="menu-section">
       <div class="menu-heading">🍵 <span>Natsu</span> — This Week's Menu</div>
-      <div class="menu-scroll">
-        <img class="menu-img" src="KSAF_Menu.png" alt="Natsu Menu">
-      </div>
-      <div class="menu-hint">← Scroll to view · Tap to zoom</div>
+      <img class="menu-img" src="KSAF_Menu.png" alt="Natsu Menu">
     </div>
 
     <div class="field-group">
